@@ -38,26 +38,30 @@ function init() {
   // renderer.outputEncoding = THREE.sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
+  const BACKGROUND_COLOR = '#E2E6E9'
+  const ALIBABA_PRIMARY = '#FDB713'
+  const ALIBABA_PROMARY_LIGHT = '#FFE19C'
+  
   // Initialize scene, light
   scene = new Scene();
-  scene.add(new AmbientLight(0xbbbbbb, 0.3));
-  scene.background = new Color(0x040d21);
+  scene.add(new AmbientLight(ALIBABA_PRIMARY, 1));
+  scene.background = new Color(BACKGROUND_COLOR);
 
   // Initialize camera, light
   camera = new PerspectiveCamera();
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
-  var dLight = new DirectionalLight(0xffffff, 0.8);
+  var dLight = new DirectionalLight(ALIBABA_PRIMARY, 1);
   dLight.position.set(-800, 2000, 400);
   camera.add(dLight);
 
-  var dLight1 = new DirectionalLight(0x7982f6, 1);
+  var dLight1 = new DirectionalLight(ALIBABA_PRIMARY, 1);
   dLight1.position.set(-200, 500, 200);
   camera.add(dLight1);
 
-  var dLight2 = new PointLight(0x8566cc, 0.5);
-  dLight2.position.set(-200, 500, 200);
+  var dLight2 = new PointLight(ALIBABA_PRIMARY, 0.5);
+  dLight2.position.set(-200, -400, 200);
   camera.add(dLight2);
 
   camera.position.z = 400;
@@ -106,23 +110,15 @@ function initGlobe() {
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
     .showAtmosphere(true)
-    .atmosphereColor("#3a228a")
+    .atmosphereColor("#FFE19C")
     .atmosphereAltitude(0.25)
-    .hexPolygonColor((e) => {
-      if (
-        ["KGZ", "KOR", "THA", "RUS", "UZB", "IDN", "KAZ", "MYS"].includes(
-          e.properties.ISO_A3
-        )
-      ) {
-        return "rgba(255,255,255, 1)";
-      } else return "rgba(255,255,255, 0.7)";
-    });
+    .hexPolygonColor((e) => "#FFE19C");
 
   // NOTE Arc animations are followed after the globe enters the scene
   setTimeout(() => {
     Globe.arcsData(travelHistory.flights)
       .arcColor((e) => {
-        return e.status ? "#9cff00" : "#FF4000";
+        return e.status ? "#F2F9FF" : "#F2F9FF";
       })
       .arcAltitude((e) => {
         return e.arcAlt;
@@ -135,7 +131,7 @@ function initGlobe() {
       .arcDashAnimateTime(1000)
       .arcsTransitionDuration(1000)
       .arcDashInitialGap((e) => e.order * 1)
-      .labelsData(airportHistory.airports)
+      // .labelsData(airportHistory.airports)
       .labelColor(() => "#ffcb21")
       .labelDotOrientation((e) => {
         return e.text === "ALA" ? "top" : "right";
@@ -155,8 +151,8 @@ function initGlobe() {
   Globe.rotateY(-Math.PI * (5 / 9));
   Globe.rotateZ(-Math.PI / 6);
   const globeMaterial = Globe.globeMaterial();
-  globeMaterial.color = new Color(0x3a228a);
-  globeMaterial.emissive = new Color(0x220038);
+  globeMaterial.color = new Color('#4D2800');
+  globeMaterial.emissive = new Color(0x220038); 
   globeMaterial.emissiveIntensity = 0.1;
   globeMaterial.shininess = 0.7;
 
